@@ -386,7 +386,8 @@ void ChatRoom::SetPlayerList(const Network::RoomMember::MemberList& member_list)
             continue;
         QStandardItem* name_item = new PlayerListItem(member.nickname, member.username,
                                                       member.avatar_url, member.game_info);
-        #ifdef ENABLE_WEB_SERVICE
+
+#ifdef ENABLE_WEB_SERVICE
         if (!icon_cache.count(member.avatar_url) && !member.avatar_url.empty()) {
             // Start a request to get the member's avatar
             const QUrl url(QString::fromStdString(member.avatar_url));
@@ -416,7 +417,8 @@ void ChatRoom::SetPlayerList(const Network::RoomMember::MemberList& member_list)
                     });
             future_watcher->setFuture(future);
         }
-        #endif
+#endif
+
         player_list->invisibleRootItem()->appendRow(name_item);
     }
     UpdateIconDisplay();

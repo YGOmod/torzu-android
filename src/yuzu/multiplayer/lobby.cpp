@@ -186,7 +186,7 @@ void Lobby::OnJoinRoom(const QModelIndex& source) {
     // attempt to connect in a different thread
     QFuture<void> f = QtConcurrent::run([nickname, ip, port, password, verify_uid, this] {
         std::string token;
-        #ifdef ENABLE_WEB_SERVICE
+#ifdef ENABLE_WEB_SERVICE
         if (!Settings::values.yuzu_username.GetValue().empty() &&
             !Settings::values.yuzu_token.GetValue().empty()) {
             WebService::Client client(Settings::values.web_api_url.GetValue(),
@@ -199,7 +199,7 @@ void Lobby::OnJoinRoom(const QModelIndex& source) {
                 LOG_INFO(WebService, "Successfully requested external JWT: size={}", token.size());
             }
         }
-        #endif
+#endif
         if (auto room_member = room_network.GetRoomMember().lock()) {
             room_member->Join(nickname, ip.c_str(), port, 0, Network::NoPreferredIP, password,
                               token);

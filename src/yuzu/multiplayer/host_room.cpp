@@ -98,12 +98,12 @@ std::unique_ptr<Network::VerifyUser::Backend> HostRoomWindow::CreateVerifyBacken
     bool use_validation) const {
     std::unique_ptr<Network::VerifyUser::Backend> verify_backend;
     if (use_validation) {
-        #ifdef ENABLE_WEB_SERVICE
+#ifdef ENABLE_WEB_SERVICE
         verify_backend =
             std::make_unique<WebService::VerifyUserJWT>(Settings::values.web_api_url.GetValue());
-        #else
+#else
         verify_backend = std::make_unique<Network::VerifyUser::NullBackend>();
-        #endif
+#endif
     } else {
         verify_backend = std::make_unique<Network::VerifyUser::NullBackend>();
     }
@@ -201,7 +201,7 @@ void HostRoomWindow::Host() {
             }
         }
         std::string token;
-        #ifdef ENABLE_WEB_SERVICE
+#ifdef ENABLE_WEB_SERVICE
         if (is_public) {
             WebService::Client client(Settings::values.web_api_url.GetValue(),
                                       Settings::values.yuzu_username.GetValue(),
@@ -215,7 +215,7 @@ void HostRoomWindow::Host() {
                 LOG_INFO(WebService, "Successfully requested external JWT: size={}", token.size());
             }
         }
-        #endif
+#endif
         // TODO: Check what to do with this
         member->Join(ui->username->text().toStdString(), "127.0.0.1", port, 0,
                      Network::NoPreferredIP, password, token);
