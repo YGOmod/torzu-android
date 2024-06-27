@@ -1,26 +1,20 @@
-name: torzu-android-build
+name: suyu-android-build
 
 on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'select branch to build(default: master)'
+        description: 'select branch to build(default: dev)'
         required: false
-        default: 'master'
-<<<<<<< HEAD
+        default: 'dev'
   # schedule:
   #   - cron: "0 0 */7 * *"
-=======
-  schedule:
-    - cron: "0 0 */5 * *"
->>>>>>> 5c7499e4b (fix)
 
 jobs:
   android:
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'YGOmod/torzu-android' }}
+    if: ${{ github.repository == 'YGOmod/suyu-android' }}
     steps:
-<<<<<<< HEAD
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -60,59 +54,3 @@ jobs:
         with:
           name: android
           path: artifacts/ 
-=======
-    - uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: 17
-
-    - name: Download torzu source code
-      run: |
-        cd ${{ github.workspace }}
-        git clone --branch ${{ github.event.inputs.branch || 'master' }} https://github.com/litucks/torzu.git --recursive
-        cd torzu
-        #sed -i '120i\        -Wno-unused-function' src/CMakeLists.txt
-
-    - id: version
-      name: Get version
-      run: |
-        echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
-        cd ${{ github.workspace }}/torzu
-        echo "hash=$(git log -1 --pretty=format:%H)" >> $GITHUB_OUTPUT
-        echo "short_hash=$(git describe --always --long)" >> $GITHUB_OUTPUT
-        echo "version=$(git describe --tags --always)" >> $GITHUB_OUTPUT
-
-    - name: Set up cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-          ~/.cache
-        key: ${{ runner.os }}-torzu-android-${{ steps.version.outputs.hash }}
-        restore-keys: |
-            ${{ runner.os }}-torzu-android-
-
-    - name: Prepare environment
-      run: |
-        #sudo apt-get install ccache autoconf cmake g++-11 gcc-11 git glslang-tools libasound2 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm ninja-build qtbase5-dev qtbase5-private-dev qtwebengine5-dev qtmultimedia5-dev libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libzstd-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev
-        sudo apt-get install ccache glslang-dev glslang-tools
- 
-    - name: Build Android
-      run: |
-        export NDK_CCACHE="$(which ccache)"
-        ccache -sv
-        cd ${{ github.workspace }}/torzu/src/android
-        chmod +x ./gradlew
-        ./gradlew "assembleMainlineRelease"
-        # bash gradlew build
-        mv app/build/outputs/apk/mainline/release/app-mainline-release.apk ${{ github.workspace }}/suyu-android-mainline-${{ steps.version.outputs.date }}-${{ steps.version.outputs.version }}.apk
-        ccache -sv
-
-    - name: Release Torzu Android ${{ steps.version.outputs.date }}
-      uses: softprops/action-gh-release@v2
-      with:
-        name: ${{ steps.version.outputs.date }}
-        tag_name: ${{ steps.version.outputs.date }}
-        files: ${{ github.workspace }}/torzu-android-mainline-${{ steps.version.outputs.date }}-${{ steps.version.outputs.version }}.apk
->>>>>>> 5c7499e4b (fix)
