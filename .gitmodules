@@ -37,6 +37,9 @@
 [submodule "libadrenotools"]
 	path = externals/libadrenotools
 	url = https://github.com/bylaws/libadrenotools.git
+[submodule "externals/fmt"]
+	path = externals/fmt
+	url = https://github.com/fmtlib/fmt.git
 [submodule "tzdb_to_nx"]
 	path = externals/nx_tzdb/tzdb_to_nx
 	url = https://github.com/lat9nq/tzdb_to_nx.git
