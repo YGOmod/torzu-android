@@ -293,6 +293,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 # System imported libraries
 # =======================================================================
 
+# List of all FFmpeg components required
+set(FFmpeg_COMPONENTS
+    avcodec
+    avfilter
+    avutil
+    swscale)
+    
 # Enforce the search mode of non-required packages for better and shorter failure messages
 find_package(Boost 1.79.0 REQUIRED context)
 find_package(enet 1.3 MODULE)
@@ -563,13 +570,6 @@ if (ENABLE_SDL2)
         find_package(SDL2 2.26.4 REQUIRED)
     endif()
 endif()
-
-# List of all FFmpeg components required
-set(FFmpeg_COMPONENTS
-    avcodec
-    avfilter
-    avutil
-    swscale)
 
 if (UNIX AND NOT APPLE AND NOT ANDROID)
     find_package(PkgConfig REQUIRED)
