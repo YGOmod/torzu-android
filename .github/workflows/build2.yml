@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'select branch to build(default: main)'
+        description: 'select branch to build(default: master)'
         required: false
-        default: 'main'
+        default: 'master'
   # schedule:
   #   - cron: "0 0 */7 * *"
 
@@ -24,7 +24,7 @@ jobs:
     - name: Download torzu source code
       run: |
         cd ${{ github.workspace }}
-        git clone --branch ${{ github.event.inputs.branch || 'main' }} https://github.com/litucks/torzu.git --recursive
+        git clone --branch ${{ github.event.inputs.branch || 'master' }} https://codeberg.org/litucks/torzu --recursive
         cd torzu
 
     - id: version
